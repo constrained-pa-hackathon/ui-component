@@ -1,0 +1,64 @@
+.level1, .level1 small {
+  background-color: #eef8ff;
+  color: black;
+}
+
+.level2, .level2 small {
+  background-color: #d1f5ff;
+  color: black;
+}
+
+.level3, .level3 small {
+  background-color: #34f6f2;
+  color: #1d0029;
+}
+
+#intention-result {
+  background-color: #34f6f2;
+  color: #1d0029;
+
+  padding: 0;
+	margin: 0;
+	overflow: auto;
+	overflow-y: hidden;
+	font-size: 12px;
+  line-height: 20px;
+  border: 0px solid #777;
+}
+
+.level4, .level4 small {
+  background-color: #8927F0;
+  color:  #7fffd4;
+}
+
+html, body, .container-fluid {
+  height: 100%;
+}
+
+.row {
+  height: 25%;
+}
+
+.row > div {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.button {
+  background-color: #78e3fd;
+  border: none;
+  color: black;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}
+
+.button1 {border-radius: 2px;}
+.button2 {border-radius: 4px;}
+.button3 {border-radius: 8px;}
+.button4 {border-radius: 12px;}
+.button5 {border-radius: 50%;}

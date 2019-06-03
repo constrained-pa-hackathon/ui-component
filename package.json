@@ -1,0 +1,13 @@
+{
+  "name": "ui-component",
+  "version": "1.0.0",
+  "description": "UI componenet of out personal assistant hackathon project.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Team",
+  "devDependencies": {
+    "electron": "^2.0.2"
+  }
+}

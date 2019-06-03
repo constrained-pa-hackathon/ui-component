@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Virtual Navigator Demo</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="./styles.css">
+
+  <!-- Scripts -->
+  <script>
+    // window.nodeRequire = require;
+    // delete window.require;
+    // delete window.exports;
+    // delete window.module;
+  </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="window.js"></script>
+</head>
+
+<body>
+  <div id="container" class="container-fluid">
+
+    <!-- Top Row -->
+    <div class="row level1">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+          <center><button id="recordBtn" class="button button4"><h1>RECORD</h1></button></center>
+      </div>
+    </div>
+
+    <!-- 2nd Row -->
+    <div class="row level2">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h2>
+          <span id="stt-result"></span>
+        </h2>
+      </div>
+    </div>
+
+    <!-- 3rd Row -->
+    <div class="row level3">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h2>
+          <pre intention-result id="intention-result"></pre>
+        </h2>
+      </div>
+    </div>
+
+    <!-- Bottom Row -->
+    <div class="row level4">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h2>
+          <span id="tts-to-be-synthesized"></span>
+        </h2>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
