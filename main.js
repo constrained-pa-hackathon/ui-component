@@ -37,7 +37,7 @@ function createWindow() {
   }))
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Show window when page is ready
   mainWindow.once('ready-to-show', () => {
