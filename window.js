@@ -1,7 +1,7 @@
 /* global $ */
 
 var stt_text = "Get the frequency of pirates 1";
-var command = { "action": "read", "subject": "frequency", "params": { "callsign": "pirates", "number": "1" } }
+var command = { "action": "get", "subject": "frequency", "params": { "callsign": "pirates", "number": "1" } }
 var tts_text //= "Frequency of pirates 1 is 305.25"
 
 var replySoundBuffer= null // Holds the sound file for the last reply
@@ -9,6 +9,13 @@ var context
 
 // Run this function after the page has loaded
 $(() => {
+
+
+  navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(stream => {
+    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start();
+  });
 
 
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -47,9 +54,7 @@ function get_response(jsonObj, cb)
   };
 
   oReq.send(JSON.stringify(jsonObj));
-
 }
-
 
 function get_synth_tts(text, cb) {
 

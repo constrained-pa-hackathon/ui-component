@@ -8,6 +8,6 @@
   },
   "author": "Team",
   "devDependencies": {
-    "electron": "^2.0.2"
+    "electron": "^2.0.18"
   }
 }
