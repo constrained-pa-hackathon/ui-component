@@ -1,5 +1,5 @@
 /* global $ */
-var $ = global.jQuery = require('./jquery-3.2.1.js');
+var $ = global.jQuery = require('./jquery-3.2.1.js')
 /* global $ */
 
 var stt_text = "Get the frequency of pirates 1";
@@ -25,44 +25,90 @@ $(() => {
         this.style.background = 'red'
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
-                const mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.start();
-                const audioChunks = [];
+                // const mediaRecorder = new MediaRecorder(stream);
+                // mediaRecorder.start();
+                // const audioChunks = [];
+                //
+                // mediaRecorder.addEventListener("dataavailable", e => {
+                //     audioChunks.push(e.data);
+                // });
+                //
+                // mediaRecorder.addEventListener("stop", () => {
+                //     console.log("Finished listening");
+                //     const audioBlob = new Blob(audioChunks, { type: "audio/wav; codec=PCM" });
+                //     console.log("Finished creating blob");
+                //     const audioUrl = URL.createObjectURL(audioBlob);
+                //     const audio = new Audio(audioUrl);
+                //     var formData = new FormData();
+                //     formData.append('sentence_audio', audioBlob);
+                //     $.ajax({
+                //         url: "http://localhost:4444/speech_to_text",
+                //         type: "POST",
+                //         data: formData,
+                //         processData: false,
+                //         contentType: false,
+                //         success : function(data, status) {
+                //             console.log("Sent data as ${data}")
+                //         }
+                //     }
+                //     )
+                //
+                //     audio.play();
+                //     // new Response(audioBlob).arrayBuffer().then(
+                //     //     () => {
+                //     //         formData1 = {"sentence_audio": 1}
+                //     //         var formData = new FormData().append('sentence_audio', 1)
+                //     //         $.ajax({
+                //     //             url: "http://localhost:4444/speech_to_text",
+                //     //             type: "POST",
+                //     //             data: formData,
+                //     //             processData: false,
+                //     //             contentType: "multipart/formdata",
+                //     //             success : function(data, status) {
+                //     //                 console.log("Sent data as ${data}")
+                //     //             }
+                //     //         }
+                //     //         )
+                //     //     })
+                //     });
+                //
+                // setTimeout(() => {
+                //     mediaRecorder.stop();
+                //     document.getElementById('recordBtn').style.background = prev_background
+                // }, 3000);
 
-                mediaRecorder.addEventListener("dataavailable", event => {
-                    audioChunks.push(event.data);
-                });
-
-                mediaRecorder.addEventListener("stop", () => {
-                    console.log("Finished listening");
-                    const audioBlob = new Blob(audioChunks);
-                    console.log("Finished creating blob");
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    const audio = new Audio(audioUrl);
-
-                    audio.play();
-                    new Response(audioBlob).arrayBuffer().then(
-                        () => {
-                            formData1 = {"sentence_audio": 1}
-                            var formData = new FormData().append("sentence_audio", 1)
-                            $.ajax({
-                                url: "http://localhost:4444/speech_to_text",
-                                type: "POST",
-                                data: formData1,
-                                processData: false,
-                                contentType: "application/x-www-form-urlencoded",
-                                success : function(data, status) {
-                                console.log("Sent data as ${data}")
-                                }
-                            }
-                            )
-                        })
-                    });
-
+                /* assign to gumStream for later use */
+                gumStream = stream;
+                /* use the stream */
+                audioContext = new AudioContext()
+                input = audioContext.createMediaStreamSource(stream);
+                /* Create the Recorder object and configure to record mono sound (1 channel) Recording 2 channels will double the file size */
+                rec = new Recorder(input, {
+                    numChannels: 1
+                })
+                //start the recording process
+                rec.record()
+                console.log("Recording started");
                 setTimeout(() => {
-                    mediaRecorder.stop();
-                    document.getElementById('recordBtn').style.background = prev_background
-                }, 3000);
+                        rec.stop();
+                        console.log("Recording stopped")
+                        document.getElementById('recordBtn').style.background = prev_background
+                        rec.exportWAV((blob) => {
+                            var fd = new FormData();
+                            fd.append("sentence-audio", blob);
+                            $.ajax({
+                                                url: "http://localhost:4444/speech_to_text",
+                                                type: "POST",
+                                                data: fd,
+                                                processData: false,
+                                                contentType: false,
+                                                success : function(data, status) {
+                                                    console.log("Sent data as ${data}")
+                                                }
+                                            }
+                                            )
+                        });
+                    }, 3000);
             });
         /*
               get_response(command, function(jsonObj) {
