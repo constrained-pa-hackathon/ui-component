@@ -2,21 +2,23 @@
 
 var replySoundBuffer = null // Holds the sound file for the last reply
 var context
+var rec
 
 // Run this function after the page has loaded
 $(() => {
 
+  var prev_background = $('#recordBtn').css('background-color');
+  console.log(prev_background)
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
   context = new AudioContext();
-  document.getElementById('recordBtn').addEventListener('click', function () {
+  document.getElementById('recordBtn').addEventListener('mousedown', function () {
 
     $("#stt-result").text("wait...")
     $("#intention-result").text("wait...")
     $("#tts-to-be-synthesized").text("wait...")
 
     /////
-    let prev_background = this.style.background;
-    this.style.background = 'red'
+    $('#recordBtn').css('background-color', "red")
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
 
@@ -32,46 +34,8 @@ $(() => {
         //start the recording process
         rec.record()
         console.log("Recording started");
-        setTimeout(() => {
-          rec.stop();
-          console.log("Recording stopped")
-          document.getElementById('recordBtn').style.background = prev_background
-          rec.exportWAV((blob) => {
-
-            var fd = new FormData();
-            fd.append("sentence-audio", blob);
-            $.ajax({
-              url: "http://52.166.69.21:4444/speech_to_text",
-              type: "POST",
-              data: fd,
-              processData: false,
-              contentType: false,
-              success: function (data, status) {
-                console.log(`Sent data as ${data}`)
-
-                // TODO: Move this function into the appropriate place
-                onFinishedStt(data.response);
-              }
-            }
-            )
-            /*console.log("Export WAV callback")
-            var fd = new FormData();
-            var oReq = new XMLHttpRequest();
-            oReq.open("POST", "http://52.166.69.21:4444/speech_to_text", true);
-            //oReq.setRequestHeader("Content-type", "");
-            oReq.onload = function (oEvent) {
-              console.log("Data was sent")
-              onFinishedStt(oReq.response);
-            };
-        
-            oReq.send(fd);*/
-
-          });
-        }, 3000);
       });
   })
-
-
 
   /**
    * This function should be the callback of a finished STT process
@@ -156,4 +120,32 @@ $(() => {
 
     oReq.send(null);
   }
+
+
+
+  document.getElementById('recordBtn').addEventListener('mouseup', function () {
+    $('#recordBtn').css('background-color', prev_background)
+    rec.stop();
+    console.log("Recording stopped")
+    document.getElementById('recordBtn').style.background = prev_background
+    rec.exportWAV((blob) => {
+
+      var fd = new FormData();
+      fd.append("sentence-audio", blob);
+      $.ajax({
+        url: "http://52.166.69.21:4444/speech_to_text",
+        type: "POST",
+        data: fd,
+        processData: false,
+        contentType: false,
+        success: function (data, status) {
+          console.log(`Received data from stt: ${data}`)
+
+          // TODO: Move this function into the appropriate place
+          onFinishedStt(data.output_text);
+        }
+      })
+    })
+  })
+
 })
